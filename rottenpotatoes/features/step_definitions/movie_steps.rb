@@ -37,9 +37,6 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
 end
 
 Then /I should see all the movies/ do
-  # Make sure that all the movies in the app are visible in the table
-  movies = Movie.all
-  movies.each do |movie|
-    assert page.body =~ /#{movie.title}/, "#{movie.title} not available"
-  end
+  num_movies = page.all('table#movies tbody tr').length
+  num_movies.should eq Movie.count
 end
