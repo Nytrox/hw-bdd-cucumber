@@ -16,7 +16,7 @@ Then /I should see "(.*)" before "(.*)"/ do |e1, e2|
   #  page.body is the entire content of the page as a string.
   i1 = page.body.index(e1)
   i2 = page.body.index(e2)
-  assert i1 < i2
+  i1 < i2
 end
 
 # Make it easier to express checking or unchecking several boxes at once
@@ -37,6 +37,8 @@ When /I (un)?check the following ratings: (.*)/ do |uncheck, rating_list|
 end
 
 Then /I should see all the movies/ do
-  num_movies = page.all('table#movies tbody tr').length
-  num_movies.should eq Movie.count
+  movies = Movie.all
+  movies.each do |movie|
+    assert page.body =~ /#{movie.title}/
+  end
 end
